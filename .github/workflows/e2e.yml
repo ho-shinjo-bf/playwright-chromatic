@@ -1,9 +1,14 @@
 name: e2e
-on: [deployment_status]
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
 
 jobs:
   visual-tests:
-    if: github.event.deployment_status.state == 'success'
     name: "basic visual comparison tests"
     timeout-minutes: 5
     runs-on: ubuntu-latest
@@ -46,4 +51,4 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           autoAcceptChanges: "main"
         env:
-          BASE_URL: https://playwright-chromatic.vercel.app/
+          BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
