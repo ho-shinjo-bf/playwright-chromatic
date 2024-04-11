@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:next": "pnpm --filter ...simple-next dev"
+    "dev:next": "pnpm --filter ...simple-next dev",
+    "start:next": "pnpm --filter ...simple-next build && pnpm --filter ...simple-next start",
+    "e2e:next": "pnpm --filter ...simple-next-e2e test:c"
   }
 }

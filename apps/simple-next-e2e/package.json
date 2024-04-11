@@ -2,13 +2,12 @@
   "name": "simple-next-e2e",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:c": "chromatic --playwright --exit-zero-on-changes"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@chromatic-com/playwright": "^0.6.6",
     "chromatic": "^11.3.0",
