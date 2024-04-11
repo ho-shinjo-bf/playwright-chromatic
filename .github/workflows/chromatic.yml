@@ -1,13 +1,11 @@
-name: e2e
-on: [deployment_status]
+name: chromatic
+on: [push]
 
 jobs:
-  e2e-tests:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
-    name: "basic e2e tests"
+  visual-tests:
+    name: "basic visual comparison tests"
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.43.0-jammy
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,8 +28,9 @@ jobs:
           vercel_access_token: ${{ secrets.VERCEL_ACCESS_TOKEN }}
           vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Playwright Tests
+      - name: Run Chromatic
         if: steps.alias-preview-url.outputs.status == 'READY'
-        run: HOME=/root pnpm playwright:next
+        run: pnpm chromatic:next
         env:
           BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
