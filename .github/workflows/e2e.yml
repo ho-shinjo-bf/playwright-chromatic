@@ -35,13 +35,13 @@ jobs:
 
       - name: Playwright Tests
         if: steps.alias-preview-url.outputs.status == 'READY'
-        run: HOME=/root pnpm playwright:next
+        run: pnpm playwright:next
         env:
           BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
 
       - name: Run Chromatic
         if: steps.alias-preview-url.outputs.status == 'READY'
-        run: git config --global safe.directory '*' && HOME=/root pnpm chromatic:next
+        run: pnpm chromatic:next
         env:
           BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
