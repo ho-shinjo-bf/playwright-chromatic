@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "playwright test",
-    "test:c": "chromatic --playwright --exit-zero-on-changes"
+    "test:c": "chromatic --playwright --exit-zero-on-changes --config-file ./chromatic.config.json"
   },
   "keywords": [],
   "author": "",
