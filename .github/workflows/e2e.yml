@@ -2,10 +2,30 @@ name: e2e
 on: [deployment_status]
 
 jobs:
-  vercel-preview-url-alias:
+  visual-tests:
     if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
+    name: "basic visual comparison tests"
+    timeout-minutes: 5
     runs-on: ubuntu-latest
+    # container: mcr.microsoft.com/playwright:v1.43.0-jammy
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Install Playwright Browsers
+        run: pnpm dlx playwright install --with-deps
+
       - name: Get Vercel's Alias Preview URL
         id: alias-preview-url
         uses: justincase-jp/vercel-preview-url-alias@v0.3.3
@@ -13,5 +33,15 @@ jobs:
           vercel_access_token: ${{ secrets.VERCEL_ACCESS_TOKEN }}
           vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Echo preview
-        run: echo "${{ steps.alias-preview-url.outputs.preview_url_origin }} vs ${{ steps.alias-preview-url.outputs.preview_url_alias }}"
+      - name: Playwright Tests
+        if: steps.alias-preview-url.outputs.status == 'READY'
+        run: pnpm playwright:next
+        env:
+          BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
+
+      - name: Run Chromatic
+        if: steps.alias-preview-url.outputs.status == 'READY'
+        run: pnpm chromatic:next
+        env:
+          BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
