@@ -36,6 +36,9 @@ jobs:
 
       - name: Run Chromatic
         if: steps.alias-preview-url.outputs.status == 'READY'
-        run: HOME=/root pnpm chromatic:next
+        uses: chromaui/action@latest
+        with:
+          playwright: true
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         env:
           BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
