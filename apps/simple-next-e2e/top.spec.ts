@@ -1,7 +1,7 @@
 import { test, expect, takeSnapshot } from "@chromatic-com/playwright";
 
 test("top-page", async ({ page }, testInfo) => {
-  await page.goto("http://localhost:3000/");
+  await page.goto("/");
 
   await expect(page).toHaveTitle("Create Next App");
 
