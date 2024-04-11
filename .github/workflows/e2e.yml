@@ -31,7 +31,7 @@ jobs:
 
       - name: Playwright Tests
         if: steps.alias-preview-url.outputs.status == 'READY'
-        run: pnpm playwright:next
+        run: HOME=/root pnpm playwright:next
         env:
           BASE_URL: https://${{ steps.alias-preview-url.outputs.preview_url_origin }}
 
