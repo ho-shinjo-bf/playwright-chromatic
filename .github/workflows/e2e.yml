@@ -1,0 +1,17 @@
+name: e2e
+on: [deployment_status]
+
+jobs:
+  vercel-preview-url-alias:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Vercel's Alias Preview URL
+        id: alias-preview-url
+        uses: justincase-jp/vercel-preview-url-alias@v0.3.3
+        with:
+          vercel_access_token: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+          vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Echo preview
+        run: echo "${{ steps.alias-preview-url.outputs.preview_url_origin }} vs ${{ steps.alias-preview-url.outputs.preview_url_alias }}"
