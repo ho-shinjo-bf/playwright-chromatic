@@ -1,0 +1,10 @@
+{
+  "name": "playwright-chromatic",
+  "license": "MIT",
+  "packageManager": "pnpm@8.11.0",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev:next": "pnpm --filter ...simple-next dev"
+  }
+}
