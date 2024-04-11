@@ -3,7 +3,7 @@ on: [deployment_status]
 
 jobs:
   visual-tests:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
+    if: github.event.deployment_status.state == 'success'
     name: "basic visual comparison tests"
     timeout-minutes: 5
     runs-on: ubuntu-latest
